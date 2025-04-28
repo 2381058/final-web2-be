@@ -10,6 +10,7 @@ import { User } from '../user/user.entity';
 import { RegisterDTO } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
+import { subscribe } from 'diagnostics_channel';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
     ) {
       throw new UnauthorizedException();
     }
-    const payload: JwtPayloadDto = { sub: user.id, email: user.email };
+    const payload: JwtPayloadDto = { sub: user.id, email: user.email, userId : user.id, username : user.username};
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

@@ -45,7 +45,15 @@ async function bootstrap() {
     `);
   });
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true, // <-- Aktifkan transformasi otomatis
+    whitelist: true, // Opsional: hapus properti yang tidak ada di DTO
+    transformOptions: {
+      enableImplicitConversion: true, // Opsional: membantu konversi implisit
+    },
+  }));
+
   await app.listen(process.env.PORT ?? 3000);
+  console.log(`Application is running on: ${await app.getUrl()}`); // Tambahkan log untuk URL
 }
 bootstrap();

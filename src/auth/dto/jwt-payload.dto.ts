@@ -1,9 +1,8 @@
+// src/auth/dto/jwt-payload.dto.ts
 export class JwtPayloadDto {
-  sub: number;
-
+  userId: number; // Atau 'sub' jika Anda menggunakan itu
   email: string;
-
-  iat?: number;
-
-  exp?: number;
+  username: string;
+  sub: number;
+  // Tambahkan properti lain jika ada
 }
