@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CareSchedule } from './care-schedule.entity';
-import { CareScheduleDto } from 'src/auth/dto/care-schedule.dto';
-import { CreateCareScheduleDto } from 'src/auth/dto/create-care-schedule.dto';
+import { CareScheduleDto } from 'src/care-schedule/dto/care-schedule.dto';
+import { CreateCareScheduleDto } from 'src/care-schedule/dto/create-care-schedule.dto';
 
 @Injectable()
 export class CareScheduleService {

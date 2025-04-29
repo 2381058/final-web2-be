@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, ParseIntPipe } from '@nestjs/common';
 import { CareScheduleService } from './care-schedule.service';
 import { Request } from 'express';
-import { CreateCareScheduleDto } from 'src/auth/dto/create-care-schedule.dto';
+import { CreateCareScheduleDto } from 'src/care-schedule/dto/create-care-schedule.dto';
 
 
 @Controller('care-schedule')
