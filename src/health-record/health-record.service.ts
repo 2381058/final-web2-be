@@ -42,9 +42,34 @@ export class HealthRecordService {
     }
 
     async update(userId: number, id: number, updateHealthRecordDto: CreateHealthRecordDto): Promise<HealthRecordDto> {
-        const healthRecord = await this.findOne(userId, id);
-        Object.assign(healthRecord, updateHealthRecordDto);
+        const healthRecord = await this.healthRecordRepository.findOne({
+            where: {
+                id: id, // ID dari HealthRecord itu sendiri
+                user: { // Nama properti relasi di HealthRecord entity
+                    id: userId // ID dari User yang dicari
+                }
+            },
+            relations: ['pet'],   // <-- INI YANG DITAMBAHKAN/DIPASTIKAN ADA
+        });
+
+        // 2. Periksa apakah record ditemukan
+        if (!healthRecord) {
+            throw new NotFoundException(`Catatan Kesehatan dengan ID ${id} tidak ditemukan untuk user ${userId}`);
+        }
+
+        // 3. Gabungkan (Merge) perubahan dari DTO ke entity yang ada
+        //    Ini lebih aman daripada Object.assign, terutama jika DTO punya properti
+        //    yang tidak seharusnya langsung ditimpa ke entity (seperti petId).
+        this.healthRecordRepository.merge(healthRecord, updateHealthRecordDto);
+        // Pastikan DTO Anda (CreateHealthRecordDto) hanya berisi field yang relevan
+        // untuk diupdate di tabel health_records.
+
+        // 4. Simpan perubahan ke database
         const updatedRecord = await this.healthRecordRepository.save(healthRecord);
+        // Hasil save ('updatedRecord') akan berisi data yang sudah diperbarui
+        // dan seharusnya tetap memiliki relasi 'pet' yang sudah dimuat.
+
+        // 5. Panggil mapToDto dengan data yang sudah lengkap (termasuk relasi pet)
         return this.mapToDto(updatedRecord);
     }
 
@@ -58,6 +83,23 @@ export class HealthRecordService {
 
     private mapToDto(healthRecord: HealthRecord): HealthRecordDto {
         const { id, pet, issueType, description, diagnosis, treatment, recordDate, createdAt, updatedAt } = healthRecord;
-        return { id, petId: pet.id, issueType, description, diagnosis, treatment, recordDate, createdAt, updatedAt };
+
+        if (!pet) {
+             // Ini seharusnya tidak terjadi lagi setelah perbaikan di 'update'
+             console.error(`Relasi Pet tidak dimuat saat mapping HealthRecord ID: ${id}`);
+             throw new Error('Terjadi kesalahan internal: Detail pet tidak dapat dimuat.');
+        }
+
+        return {
+            id,
+            petId: pet.id, // Ini seharusnya aman sekarang
+            issueType,
+            description,
+            diagnosis,
+            treatment,
+            recordDate,
+            createdAt,
+            updatedAt
+        };
     }
 }

@@ -8,8 +8,6 @@ export class CreateCareScheduleDto {
     @IsEnum(CareType)
     @IsNotEmpty()
     careType: CareType;
-
-    @IsDateString()
     @IsNotEmpty()
     scheduledAt: Date;
 

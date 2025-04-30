@@ -18,7 +18,6 @@ export class CreateHealthRecordDto {
     @IsOptional()
     treatment?: string;
 
-    @IsDateString()
     @IsNotEmpty()
     recordDate: Date;
 }

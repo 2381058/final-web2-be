@@ -15,7 +15,11 @@ export class CareScheduleService {
     async create(userId: number, createCareScheduleDto: CreateCareScheduleDto): Promise<CareScheduleDto> {
         const careSchedule = this.careScheduleRepository.create({
             user: { id: userId },
-            ...createCareScheduleDto,
+            notes : createCareScheduleDto.notes,
+            scheduledAt: createCareScheduleDto.scheduledAt,
+            careType: createCareScheduleDto.careType,
+            petName: createCareScheduleDto.petName
+            
         });
         const savedSchedule = await this.careScheduleRepository.save(careSchedule);
         return this.mapToDto(savedSchedule);
