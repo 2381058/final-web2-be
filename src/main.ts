@@ -14,6 +14,7 @@ async function bootstrap() {
     .addSecurityRequirements('bearer')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+  
   // Serve raw OpenAPI JSON
   app.use('/api/swagger-json', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -46,14 +47,12 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe({
-    transform: true, // <-- Aktifkan transformasi otomatis
-    whitelist: true, // Opsional: hapus properti yang tidak ada di DTO
-    transformOptions: {
-      enableImplicitConversion: true, // Opsional: membantu konversi implisit
-    },
+    transform: true,
+    whitelist: true,
   }));
 
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: ${await app.getUrl()}`); // Tambahkan log untuk URL
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
