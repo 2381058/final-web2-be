@@ -36,7 +36,7 @@ async function bootstrap() {
           <script>
             window.onload = function () {
               SwaggerUIBundle({
-                url: '/api/swagger-json',
+                url: window.location.origin + '/api/swagger-json',
                 dom_id: '#swagger-ui',
               });
             };

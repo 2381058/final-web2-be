@@ -8,7 +8,6 @@ import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { PostModule } from './post/post.module';
 import { CareScheduleModule } from './care-schedule/care-schedule.module';
 import { HealthRecordModule } from './health-record/health-record.module';
 import { PetModule } from './pet/pet.module';
@@ -36,7 +35,6 @@ import { PetModule } from './pet/pet.module';
     }),
     AuthModule,
     UserModule,
-    PostModule,
     CareScheduleModule,
     HealthRecordModule,
     PetModule,
